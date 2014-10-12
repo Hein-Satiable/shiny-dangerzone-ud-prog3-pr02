@@ -17,6 +17,8 @@ public class VentanaJuego extends JFrame {
 	MundoJuego miMundo;        // Mundo del juego
 	CocheJuego miCoche;        // Coche del juego
 	MiRunnable miHilo = null;  // Hilo del bucle principal de juego	
+	boolean [] arrayFlechas = new boolean[4];
+	
 
 	/** Constructor de la ventana de juego. Crea y devuelve la ventana inicializada
 	 * sin coches dentro
@@ -80,21 +82,41 @@ public class VentanaJuego extends JFrame {
 			public void keyPressed(KeyEvent e) {
 				switch (e.getKeyCode()) {
 					case KeyEvent.VK_UP: {
-						miCoche.acelera( +5, 1 );
+						arrayFlechas[0] = true;
 						break;
 					}
 					case KeyEvent.VK_DOWN: {
-						miCoche.acelera( -5, 1 );
+						arrayFlechas[1] = true;
 						break;
 					}
 					case KeyEvent.VK_LEFT: {
-						miCoche.gira( +10 );
+						arrayFlechas[2] = true;
 						break;
 					}
 					case KeyEvent.VK_RIGHT: {
-						miCoche.gira( -10 );
+						arrayFlechas[3] = true;
 						break;
 					}
+				}
+			}
+			public void keyReleased(KeyEvent f)	{
+				switch (f.getKeyCode()) {
+				case KeyEvent.VK_UP: {
+					arrayFlechas[0] = false;	
+					break;
+				}
+				case KeyEvent.VK_DOWN: {
+					arrayFlechas[1] = false;
+					break;
+				}
+				case KeyEvent.VK_LEFT: {
+					arrayFlechas[2] = false;	
+					break;
+				}
+				case KeyEvent.VK_RIGHT: {
+					arrayFlechas[3] = false;	
+					break;
+				}
 				}
 			}
 		});
@@ -154,6 +176,15 @@ public class VentanaJuego extends JFrame {
 				// Mover coche
 				miCoche.mueve( 0.040 );
 				// Chequear choques
+				//Giros del cloche con las teclas
+				if (arrayFlechas[0] == true) 
+					miCoche.acelera( +10, 1 );		
+				if (arrayFlechas[1] == true) 
+					miCoche.acelera( -10, 1 );
+				if (arrayFlechas[2] == true) 
+					miCoche.gira( +10 );
+				if (arrayFlechas[3] == true)
+					miCoche.gira( -10 );
 				// (se comprueba tanto X como Y porque podría a la vez chocar en las dos direcciones (esquinas)
 				if (miMundo.hayChoqueHorizontal(miCoche)) // Espejo horizontal si choca en X
 					miMundo.rebotaHorizontal(miCoche);
