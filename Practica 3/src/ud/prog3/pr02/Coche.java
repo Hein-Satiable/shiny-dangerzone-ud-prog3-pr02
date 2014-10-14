@@ -10,6 +10,11 @@ public class Coche {
 	protected double posX;  // Posición en X (horizontal)
 	protected double posY;  // Posición en Y (vertical)
 	protected String piloto;  // Nombre de piloto
+	protected static int MASA;		//Masa del coche en Kg
+	protected static double FUERZA_BASE_ADELANTE;	//Fuerza base adelante del coche
+	protected static double FUERZA_BASE_ATRAS;		//Fuerza base atras del coche
+	protected static double COEF_RZTO_SUELO;		//Coeficiente de rozamiento del suelo
+	protected static double COEF_RZTO_AIRE;		//Coeficiente de rozamiento del aire
 	
 	// Constructores
 	
@@ -18,6 +23,11 @@ public class Coche {
 		miDireccionActual = 0;
 		posX = 300;
 		posY = 300;
+		MASA = 1;
+		COEF_RZTO_SUELO = 15.5;
+		COEF_RZTO_AIRE = 0.35;	
+		FUERZA_BASE_ADELANTE = 2000;
+		FUERZA_BASE_ATRAS = 1000;
 	}
 	
 	/** Devuelve la velocidad actual del coche en píxeles por segundo
@@ -102,5 +112,35 @@ public class Coche {
 	public String toString() {
 		return piloto + " (" + posX + "," + posY + ") - " +
 			   "Velocidad: " + miVelocidad + " ## Dirección: " + miDireccionActual; 
+	}
+	
+	/** Devuelve la fuerza de aceleración del coche, de acuerdo al motor definido en la práctica 2
+	* @return Fuerza de aceleración en Newtixels
+	*/
+	public double fuerzaAceleracionAdelante() {
+		if (miVelocidad<=-150) return FUERZA_BASE_ADELANTE;
+		else if (miVelocidad<=0)
+		return FUERZA_BASE_ADELANTE*(-miVelocidad/150*0.5+0.5);
+		else if (miVelocidad<=250)
+		return FUERZA_BASE_ADELANTE*(miVelocidad/250*0.5+0.5);
+		else if (miVelocidad<=750)
+		return FUERZA_BASE_ADELANTE;
+		else return FUERZA_BASE_ADELANTE*(-(miVelocidad-1000)/250);
+	}
+	
+	/** Devuelve la fuerza de aceleración del coche, de acuerdo al motor definido en la práctica 2
+	 * @return Fuerza de aceleración en Newtixels
+	 */
+	public double fuerzaAceleracionAtras(){
+		if (miVelocidad <=-350)
+			return -FUERZA_BASE_ATRAS*((miVelocidad+500)/150); 
+		else if (miVelocidad <=-200) 
+			return -FUERZA_BASE_ATRAS;
+		else if (miVelocidad <= 0)
+			return -FUERZA_BASE_ATRAS*(((-0.7*(miVelocidad+200))/200)+1);  	
+		else if (miVelocidad <= 250)
+			return -FUERZA_BASE_ATRAS*(((0.55*miVelocidad)/250)+0.3); 
+		else return -FUERZA_BASE_ATRAS*0.85;
+		
 	}
 }

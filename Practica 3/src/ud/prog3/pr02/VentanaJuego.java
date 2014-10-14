@@ -176,11 +176,18 @@ public class VentanaJuego extends JFrame {
 				// Mover coche
 				miCoche.mueve( 0.040 );
 				// Chequear choques
+				//System.out.println(miCoche.miVelocidad);		//Para poder comprobar que los rozaminetos se aplican.
 				//Giros del cloche con las teclas
 				if (arrayFlechas[0] == true) 
-					miCoche.acelera( +10, 1 );		
+					//miCoche.acelera( miCoche.fuerzaAceleracionAdelante(), 1 );	//He probado esto pero parece ser falso jajaja	
+					miMundo.aplicarFuerza(miCoche.fuerzaAceleracionAdelante(), miCoche);
+				if (arrayFlechas[0] == false)
+					miMundo.aplicarFuerza(0, miCoche);
 				if (arrayFlechas[1] == true) 
-					miCoche.acelera( -10, 1 );
+					//miCoche.acelera( miCoche.fuerzaAceleracionAtras(), 1 );	//Lo mismo que anteriormente
+					miMundo.aplicarFuerza(miCoche.fuerzaAceleracionAtras(), miCoche);
+				if (arrayFlechas[1] == false)
+					miMundo.aplicarFuerza(0, miCoche);
 				if (arrayFlechas[2] == true) 
 					miCoche.gira( +10 );
 				if (arrayFlechas[3] == true)
